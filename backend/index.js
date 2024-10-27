@@ -2,7 +2,7 @@ const express = require('express');
 const app = express();
 const PORT = 5000;
 
-// Basic route for patients data
+// Route for patients data
 app.get('/api/patients', (req, res) => {
   res.json([
     { id: 1, name: 'John Doe' },
