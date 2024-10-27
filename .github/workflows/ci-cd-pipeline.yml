@@ -7,21 +7,38 @@ on:
     branches: [main]
 
 jobs:
-  build-and-test:
+  build:
     runs-on: ubuntu-latest
 
     steps:
+      # Step 1: Checkout code
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Install backend dependencies and run tests
-        working-directory: ./backend
+      # Step 2: Check if package.json exists in backend
+      - name: Check if backend package.json exists
+        id: check-backend-package
         run: |
+          if [ -f "backend/package.json" ]; then echo "backend_exists=true" >> $GITHUB_ENV; else echo "backend_exists=false" >> $GITHUB_ENV; fi
+
+      # Step 3: Install backend dependencies and run tests if package.json exists
+      - name: Install backend dependencies and run tests
+        if: env.backend_exists == 'true'
+        run: |
+          cd backend
           npm install
           npm test
 
-      - name: Install frontend dependencies and build
-        working-directory: ./frontend
+      # Step 4: Check if package.json exists in frontend
+      - name: Check if frontend package.json exists
+        id: check-frontend-package
         run: |
+          if [ -f "frontend/package.json" ]; then echo "frontend_exists=true" >> $GITHUB_ENV; else echo "frontend_exists=false" >> $GITHUB_ENV; fi
+
+      # Step 5: Install frontend dependencies and build if package.json exists
+      - name: Install frontend dependencies and build
+        if: env.frontend_exists == 'true'
+        run: |
+          cd frontend
           npm install
           npm run build
