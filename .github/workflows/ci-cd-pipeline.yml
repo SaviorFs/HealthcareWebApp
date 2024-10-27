@@ -17,20 +17,27 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # Set up Node.js
+      # Set up Node.js environment
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '16'
 
-      # Install root-level dependencies and run tests
-      - name: Install dependencies and run tests
+      # Install root-level dependencies if needed
+      - name: Install root dependencies
+        if: exists('package.json')
+        run: |
+          npm install
+
+      # Install backend dependencies and run tests
+      - name: Install backend dependencies and run tests
+        working-directory: ./backend
         run: |
           npm install
           npm test
 
-      # Build frontend
-      - name: Build frontend
+      # Install frontend dependencies and build
+      - name: Install frontend dependencies and build
         working-directory: ./frontend
         run: |
           npm install
