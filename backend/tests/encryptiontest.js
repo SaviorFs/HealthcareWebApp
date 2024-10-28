@@ -2,7 +2,7 @@ function encrypt(data) {
   return "Encrypted_" + data;
 }
 
-// Jest test cases
+// Jest test case
 test('should encrypt patient data', () => {
   const patientData = "Sensitive Info";
   const encryptedData = encrypt(patientData);
